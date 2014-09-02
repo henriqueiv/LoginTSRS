@@ -5,175 +5,10 @@
         <title>TSRS Acessar Webpalestra</title>
 
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="js/utils.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
-            <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-            <style type="text/css">
-                .input-group-addon:last-child {
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-right-color: #ccc;
-
-                    border-left-width: 1px;
-                    border-left-style: solid;
-                    border-left-color: #ccc;
-                }
-
-                .input-group-addon:first-child {
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-right-color: #ccc;
-
-                    border-left-width: 1px;
-                    border-left-style: solid;
-                    border-left-color: #ccc;
-                }
-
-                .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child>.btn, .input-group-btn:first-child>.btn-group>.btn, .input-group-btn:first-child>.dropdown-toggle, .input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child>.btn-group:not(:last-child)>.btn {
-                    border-bottom-right-radius: 3px; 
-                    border-top-right-radius: 3px; 
-                }
-
-                .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group>.btn, .input-group-btn:last-child>.dropdown-toggle, .input-group-btn:first-child>.btn:not(:first-child), .input-group-btn:first-child>.btn-group:not(:first-child)>.btn {
-                    border-bottom-left-radius: 3px;
-                    border-top-left-radius: 3px;
-                }
-
-                div.div-nome-mail-row:last-child span.input-group-addon-remove{
-                    display: none;
-                }
-
-                div.input-group-option:last-child input.form-control{
-                    border-bottom-right-radius: 3px;
-                    border-top-right-radius: 3px;
-                    border-bottom-left-radius: 3px;
-                    border-top-left-radius: 3px;
-                }
-
-                div.input-group-option span.input-group-addon-remove{
-                    cursor: pointer;
-                }
-
-                h3{
-                    text-align: center;
-                }
-            </style>
-
-            <script type="text/javascript">
-                $(function() {
-                    $(document).on('blur', 'div.div-nome-mail-row:not(:last) input', function() {
-                        var divNomeMail = $(this).parents('.div-nome-mail-row');
-                        var inputs = $(divNomeMail).find('input[type="text"]');
-                        for (i = inputs.length - 1; i >= 0; i--) {
-                            if ($(inputs[i]).val() != '')
-                                return;
-                        }
-                        divNomeMail.remove();
-                    });
-
-                    $(document).on('keypress', 'div.form-group-options div.input-group-option:last-child input', function() {
-                        var divNomeMail = $(this).parents('.div-nome-mail-row');
-                        var sDivNomeMailHtml = divNomeMail.html();
-                        var sInputGroupClasses = divNomeMail.attr('class');
-
-                        //Pra criar somente 1 input
-                        if (divNomeMail.next().length >= 1)
-                            return;
-
-                        //Somente 1 é obrigatorio
-                        var replace = new Array("required=''", 'required=""', "required");
-                        sDivNomeMailHtml = replaceAll(replace, "", sDivNomeMailHtml);
-
-                        divNomeMail.parent().append('<div class="' + sInputGroupClasses + '">' + sDivNomeMailHtml + '</div>');
-                    });
-
-                    $(document).on('click', 'div.form-group-options .input-group-addon-remove', function() {
-                        var divNomeMail = $(this).parents('.div-nome-mail-row');
-                        if ($('.div-nome-mail-row').length == 2) {
-                            $('.div-nome-mail-row :input').prop('required', true);
-                        }
-                        divNomeMail.remove();
-                    });
-
-                    $(document).on('click', '#btnFazerLogin', function() {
-                        //https://mconf.ufrgs.br/secure?return_to=/webconf/telessauders
-                        var urlLogin = 'https://mconf.ufrgs.br/secure?return_to=/webconf/%%sala%%';
-                        var sala = $('#conferencia').find(":selected").val(); //ou $('#conferencia').val();
-                        urlLogin = replaceAll('%%sala%%', sala, urlLogin);
-                        window.location = urlLogin;
-                    });
-
-                    $('#pais').change(function() {
-                        $("#estado").attr("disabled", $("#pais").val() != 1);
-                        $("#cidade").attr("disabled", $("#pais").val() != 1);
-                        //console.log($("#pais").val());
-                    }).trigger('change');
-
-                    $('#estado').change(function() {
-                        ddlbCidades = $("#cidade");
-                        $.ajax({
-                            type: "POST",
-                            url: "http://inf.ufrgs.br/~hivalcanaia/teste_cidades.php",
-                            //contentType: "application/json; charset=utf-8",
-                            dataType: "jsonp",
-                            data: "estado=" + $("#estado").val(),
-                            error: function(result, sts, err) {
-                                alert("Error occurred, check console");
-                                console.log(result + " :: " + sts + " :: " + err);
-                            },
-                            success: function(data) {
-                                data = jQuery.parseJSON(data);
-                                ddlbCidades.empty();
-                                $.each(data, function(i, cidade) {
-                                    ddlbCidades.append('<option  value="' + cidade.id + '"> ' + cidade.nome + '</option>');
-                                });
-                                console.log("success");
-                            },
-                            complete: function(xhr, status) {
-                                console.log("Ajax completed");
-                            }
-                        });
-                    }).trigger('change');
-
-
-                    /*
-                     var $pais = $('#pais'), $estado = $('#estado'), $cidade = $('#cidade');
-                     $pais.change(function() {
-                     if ($pais.val() == 1) {
-                     $estado.removeAttr('disabled');
-                     $cidade.removeAttr('disabled');
-                     $estado.attr('value', 'value').val(estado);
-                     $cidade.attr('value', 'value').val(cidade);
-                     console.log(cidade);
-                     console.log(estado);
-                     } else {
-                     $estado.attr('disabled', 'disabled').val('');
-                     $cidade.attr('disabled', 'disabled').val('');
-                     cidade = $cidade.val();
-                     estado = $cidade.val();
-                     }
-                     }).trigger('change'); // added trigger to calculate initial state
-                     */
-                    function replaceAll(find, replace, str) {
-                        if (Object.prototype.toString.call(find) === '[object Array]') {
-                            for (i = find.length - 1; i >= 0; i--) {
-                                console.log(find[i]);
-                                str = str.replace(new RegExp(find[i], 'g'), replace);
-                            }
-                        } else {
-                            str = str.replace(new RegExp(find, 'g'), replace);
-                        }
-                        return str;
-                    }
-
-
-                    function parseJson(data) {
-                        console.log("parseJson");
-                    }
-                });
-
-
-            </script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <link href="css/estilos.css" rel="stylesheet">
     </head>
 
     <body>
@@ -188,12 +23,9 @@
                 <div class="form-group container-fluid" name="conferencia">
                     <label class="col-md-4 control-label" for="conferencia">Webpalestra:</label>
                     <div class="col-md-4">
-                        <!--
-                                Montado dinamicamente conforme as conferencias do dia
-                        -->
                         <select id="conferencia" name="conferencia" class="form-control">
-                            <option value="telessauders">Telessaude RS</option>
-                            <option value="conf-2">Conf 2</option>
+                            <option value="sala_1">Webpalestra 1 - 10:30h</option>
+                            <option value="sala_1">Webpalestra 1 - 15:30h</option>
                         </select>
                     </div>
                 </div>
@@ -205,12 +37,9 @@
                     </div>
                 </div>
 
-                <div class="form-group container-fluid" name="div-conferencia">
-                    <label class="col-md-4 control-label" for="conferencia">País:</label>
+                <div class="form-group container-fluid" name="div-pais">
+                    <label class="col-md-4 control-label" for="pais">País:</label>
                     <div class="col-md-4">
-                        <!--
-                                Montado dinamicamente conforme as conferencias do dia
-                        -->
                         <select id="pais" name="pais" class="form-control">
                             <option value="1">Brasil</option>
                             <option value="2">Argentina</option>
@@ -219,36 +48,62 @@
                 </div>
 
                 <div class="form-group container-fluid" name="div-estado">
-                    <label class="col-md-4 control-label" for="conferencia">Estado:</label>
+                    <label class="col-md-4 control-label" for="estado">Estado:</label>
                     <div class="col-md-4">
                         <select id="estado" name="estado" class="form-control">
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AP">AP</option>
+                            <option value="AM">AM</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MT">MT</option>
+                            <option value="MS">MS</option>
+                            <option value="MG">MG</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PR">PR</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
                             <option value="RS">RS</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
                             <option value="SC">SC</option>
+                            <option value="SP">SP</option>
+                            <option value="SE">SE</option>
+                            <option value="TO">TO</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group container-fluid" name="div-cidade">
-                    <label class="col-md-4 control-label" for="conferencia">Cidade:</label>
+                    <label class="col-md-4 control-label" for="cidade">Cidade:</label>
                     <div class="col-md-4">
                         <select id="cidade" name="cidade" class="form-control">
                             <option value="Porto Alegre">Porto Alegre</option>
                             <option value="Guaiba">Guaiba</option>
                         </select>
+                        <input id="cidadeOpen" name="cidadeOpen" type="text" placeholder="Cidade" class="form-control input-md" required>
                     </div>
                 </div>
 
                 <div class="form-group" name="accessBtn">
                     <label class="col-md-4 control-label" for="acessarConvidado"></label>
                     <div class="col-md-4">
-                        <button class="btn btn-success pull-right btn-block" type="submit">
+                        <button class="btn btn-success pull-right btn-block" type="submit" id="acessoConvidado">
                             Acessar como convidado
                         </button>
                     </div>
 
                 </div>
                 <h3>Quem vai assistir?</h3>
-                <div class="container-fluid col-md-offset-4">
+                <div class="container-fluid col-md-offset-3">
                     <div class="row">
                         <div class="div-nome-mail-row row" id="linhaNomeMail">
                             <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
@@ -261,18 +116,18 @@
                                     <input type="text" name="mail" class="form-control" placeholder="E-mail" required>
                                 </div>
                             </div>
-                            <!--
+                            
                             <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
-                                <div class="input-group input-group-option col-xs-12 col-md-offset-1">
+                                <div class="input-group input-group-option col-xs-12 col-md-offset-2">
                                     <select id="profissao" name="profissao" class="form-control">
                                         <option value="1">Enfermeiro</option>
                                         <option value="2">Medico</option>
                                     </select>
                                 </div>
                             </div>
-                            -->
+                            
                             <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
-                                <div class="input-group input-group-option col-xs-12 col-md-1 col-md-offset-2">
+                                <div class="input-group input-group-option col-xs-12 col-md-1 col-md-offset-3">
                                     <span class="input-group-addon input-group-addon-remove">
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </span>
