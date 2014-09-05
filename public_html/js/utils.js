@@ -42,11 +42,11 @@ $(function() {
     });
 
     $('#pais').change(function() {
-        $("#estado").attr("disabled", $("#pais").val() != 1);
+        $("#estado").attr("disabled", $("#pais").val() != 36);
         //$("#cidade").attr("disabled", $("#pais").val() != 1);
 
-        $('#cidade').toggle((this.value) == 1);
-        $('#cidadeOpen').toggle((this.value) != 1);
+        $('#cidade').toggle((this.value) == 36);
+        $('#cidadeOpen').toggle((this.value) != 36);
 
     }).trigger('change');
 
@@ -92,5 +92,22 @@ $(function() {
     function parseJson(data) {
         console.log("parseJson");
     }
+
+    function sortlist(list) {
+        arrTexts = new Array();
+
+        for (i = 0; i < list.length; i++) {
+            arrTexts[i] = list.options[i].text;
+        }
+        arrTexts.sort();
+
+        for (i = 0; i < list.length; i++) {
+            list.options[i].text = arrTexts[i];
+            list.options[i].value = arrTexts[i];
+        }
+        console.log("sortlist");
+    }
+    
+    sortlist($('#profissao')[0]);
 
 });
