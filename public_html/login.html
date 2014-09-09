@@ -1,3 +1,94 @@
+<!--
+<?php
+private function safe($text){
+    return mysql_real_escape_string($text);
+}
+
+public function getEspectadores($sala, $nomeExibicao){
+    $sql = sprintf('SELECT NOME, EMAIL FROM ESPECTADORES WHERE SALA LIKE %s AND NOME_EXIBICAO = %s', 
+                    safe($sala), safe($nomeExibicao));
+
+    $result = mysql_query($sql);
+    if(!$result){
+        die("Ocorreu um erro ao buscar os nomes e emails");
+    }
+
+    while ($row = mysql_fetch_assoc($result)) {
+        $espectadores[] = $row;
+    }
+
+    mysql_free_result($result);
+    
+    return $espectadores;
+}
+
+if(isset($_GET['sala']) && isset($_GET['nome-exibicao'])){
+    //Final da conferencia
+    $sala = $_GET['sala'];
+    $nomeExibicao = $_GET['nome-exibicao'];
+
+    $espectadores = getEspectadores($sala, $nomeExibicao);
+    if($espectadores){
+        ?>
+        <div class="div-nome-mail-row row" id="linhaNomeMail">
+            <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
+                <div class="input-group input-group-option col-xs-12">
+                    <input type="text" name="name" class="form-control" placeholder="Nome" required value=<?php echo $espectadores['NOME']?>>
+                </div>
+            </div>
+            <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
+                <div class="input-group input-group-option col-xs-12 col-md-offset-1">
+                    <input type="text" name="mail" class="form-control" placeholder="E-mail" required value=<?php echo $espectadores['EMAIL']?>>
+                </div>
+            </div>
+
+            <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
+                <div class="input-group input-group-option col-xs-12 col-md-offset-2">
+                    <select id="profissao" name="profissao" class="form-control">
+                        <option value="Enfermeiro(a)">Enfermeiro(a)</option>
+                        <option value="Técnico(a) ou auxiliar de Enfermagem">Técnico(a) ou auxiliar de Enfermagem</option>
+                        <option value="Médico(a)">Médico(a)</option>
+                        <option value="Biomédico(a)">Biomédico(a)</option>
+                        <option value="Odontólogo(a)">Odontólogo(a)</option>
+                        <option value="Auxiliar ou técnico(a) de saúde bucal">Auxiliar ou técnico(a) de saúde bucal</option>
+                        <option value="Recepcionista(a)">Recepcionista(a)</option>
+                        <option value="Nutricionista">Nutricionista</option>
+                        <option value="Fisioterapeuta">Fisioterapeuta</option>
+                        <option value="Assistente Social">Assistente Social</option>
+                        <option value="Psicólogo(a)">Psicólogo(a)</option>
+                        <option value="Educador físico(a)">Educador físico(a)</option>
+                        <option value="Farmacêutico(a)">Farmacêutico(a)</option>
+                        <option value="Terapeuta ocupacional">Terapeuta ocupacional</option>
+                        <option value="Fonoaudiólogo(a)">Fonoaudiólogo(a)</option>
+                        <option value="Arte-educador(a)">Arte-educador(a)</option>
+                        <option value="Agente Comunitário de Saúde">Agente Comunitário de Saúde</option>
+                        <option value="Agente de Controle de Endemias">Agente de Controle de Endemias</option>
+                        <option value="Vigilância Epidemiológica">Vigilância Epidemiológica</option>
+                        <option value="Vigilância Sanitária">Vigilância Sanitária</option>
+                        <option value="Estudante área da saúde">Estudante área da saúde</option>
+                        <option value="Gestor de saúde">Gestor de saúde</option>
+                        <option value="Visitador PIM">Visitador PIM</option>
+                        <option value="Sanitarista">Sanitarista</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
+                <div class="input-group input-group-option col-xs-12 col-md-1 col-md-offset-3">
+                    <span class="input-group-addon input-group-addon-remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}else{
+    //Inicio da conferencia
+}
+?>
+-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br" xml:lang="pt-br">
     <head>
@@ -375,24 +466,24 @@
                             <div class="form-group form-group-options col-xs-12 col-sm-8 col-md-3">
                                 <div class="input-group input-group-option col-xs-12 col-md-offset-2">
                                     <select id="profissao" name="profissao" class="form-control">
-                                        <option value="Enfermeiro (a)">Enfermeiro (a)</option>
-                                        <option value="Técnico (a) ou auxiliar de Enfermagem ">Técnico (a) ou auxiliar de Enfermagem </option>
-                                        <option value="Médico (a)">Médico (a)</option>
-                                        <option value="Biomédico (a)">Biomédico (a)</option>
-                                        <option value="Odontólogo (a)">Odontólogo (a)</option>
-                                        <option value="Auxiliar ou técnico (a )de saúde bucal ">Auxiliar ou técnico (a )de saúde bucal </option>
-                                        <option value="Recepcionista (a)">Recepcionista (a)</option>
+                                        <option value="Enfermeiro(a)">Enfermeiro(a)</option>
+                                        <option value="Técnico(a) ou auxiliar de Enfermagem">Técnico(a) ou auxiliar de Enfermagem</option>
+                                        <option value="Médico(a)">Médico(a)</option>
+                                        <option value="Biomédico(a)">Biomédico(a)</option>
+                                        <option value="Odontólogo(a)">Odontólogo(a)</option>
+                                        <option value="Auxiliar ou técnico(a) de saúde bucal">Auxiliar ou técnico(a) de saúde bucal</option>
+                                        <option value="Recepcionista(a)">Recepcionista(a)</option>
                                         <option value="Nutricionista">Nutricionista</option>
                                         <option value="Fisioterapeuta">Fisioterapeuta</option>
                                         <option value="Assistente Social">Assistente Social</option>
-                                        <option value="Psicólogo (a)">Psicólogo (a)</option>
-                                        <option value="Educador físico (a)">Educador físico (a)</option>
-                                        <option value="Farmacêutico (a)">Farmacêutico (a)</option>
+                                        <option value="Psicólogo(a)">Psicólogo(a)</option>
+                                        <option value="Educador físico(a)">Educador físico(a)</option>
+                                        <option value="Farmacêutico(a)">Farmacêutico(a)</option>
                                         <option value="Terapeuta ocupacional">Terapeuta ocupacional</option>
-                                        <option value="Fonoaudiólogo (a)">Fonoaudiólogo (a)</option>
-                                        <option value="Arte-educador (a)">Arte-educador (a)</option>
+                                        <option value="Fonoaudiólogo(a)">Fonoaudiólogo(a)</option>
+                                        <option value="Arte-educador(a)">Arte-educador(a)</option>
                                         <option value="Agente Comunitário de Saúde">Agente Comunitário de Saúde</option>
-                                        <option value="Agente de Controle de Endemias ">Agente de Controle de Endemias </option>
+                                        <option value="Agente de Controle de Endemias">Agente de Controle de Endemias</option>
                                         <option value="Vigilância Epidemiológica">Vigilância Epidemiológica</option>
                                         <option value="Vigilância Sanitária">Vigilância Sanitária</option>
                                         <option value="Estudante área da saúde">Estudante área da saúde</option>

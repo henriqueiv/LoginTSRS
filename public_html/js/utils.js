@@ -77,7 +77,7 @@ $(function() {
     }).trigger('change');
 
     function getConferencias() {
-        console.log("getConferencias");
+//        console.log("getConferencias");
         ddlbConferencias = $("#conferencia");
         $.ajax({
             type: "POST",
@@ -115,27 +115,8 @@ $(function() {
         return str;
     }
 
-
     function parseJson(data) {
         console.log("parseJson");
-    }
-
-    function sortlist(list) {
-        arrTexts = new Array();
-
-        for (i = 0; i < list.length; i++) {
-            console.log("Value: " + list.options[i].value + " :: Texto: " + list.options[i].text);
-            arrTexts[list.options[i].value] = list.options[i].text;
-        }
-        arrTexts.sort();
-
-        j = 0;
-        for (i in arrTexts) {
-            console.log("Value: " + i + " :: Texto: " + arrTexts[i]);
-            //list.options[j++].text = arrTexts[i];
-            //list.options[j++].value = i;
-        }
-        console.log("sortlist");
     }
 
     function sortSelect(selElem) {
@@ -172,6 +153,4 @@ $(function() {
     sortSelect($('#estado')[0]);
     sortSelect($('#cidade')[0]);
     sortSelect($('#profissao')[0]);
-    
-
 });
